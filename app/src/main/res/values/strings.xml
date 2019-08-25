@@ -1,4 +1,5 @@
 <resources>
   <string name="app_name">SigDetector</string>
   <string name="take_photo_button_text">Take a photo</string>
+  <string name="photo_preview_content_description">Preview Image</string>
 </resources>

@@ -16,4 +16,16 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent" />
+
+  <ImageView
+    android:id="@+id/photoPreview"
+    android:layout_width="300dp"
+    android:layout_height="180dp"
+    android:layout_marginTop="20dp"
+    android:adjustViewBounds="true"
+    android:contentDescription="@string/photo_preview_content_description"
+    app:layout_constraintDimensionRatio="16:9"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
