@@ -20,8 +20,14 @@ import com.example.myapplication.common.RC_CAMERA_PERMISSION
 import com.example.myapplication.common.RC_CAPTURE_IMAGE
 import com.example.myapplication.welcome.WelcomeContract.WelcomePresenter
 import com.example.myapplication.welcome.WelcomeContract.WelcomeView
+import de.lmu.ifi.dbs.jfeaturelib.features.LocalBinaryPatterns
+import ij.process.ImageProcessor
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
+import weka.classifiers.Classifier
+import weka.classifiers.pmml.consumer.SupportVectorMachineModel
+import weka.classifiers.trees.RandomForest
+import weka.core.neighboursearch.NearestNeighbourSearch
 
 class WelcomeActivity : AppCompatActivity(), WelcomeView {
   
@@ -34,7 +40,8 @@ class WelcomeActivity : AppCompatActivity(), WelcomeView {
     capturePhoto.setOnClickListener { presenter.capturePhotoClicked() }
   }
   
-  private fun requestCameraPermission() = ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), RC_CAMERA_PERMISSION)
+  private fun requestCameraPermission() = ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA),
+                                                                            RC_CAMERA_PERMISSION)
   
   override fun checkCameraPermission() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -68,8 +75,15 @@ class WelcomeActivity : AppCompatActivity(), WelcomeView {
     if (requestCode == RC_CAPTURE_IMAGE && resultCode == Activity.RESULT_OK) {
       val image = data?.extras?.get("data") as? Bitmap
       image?.let {
-        val resizedImage = Bitmap.createScaledBitmap(it, IMG_WIDTH, IMG_HEIGHT, false)
+        val resizedImage = Bitmap.createScaledBitmap(it, IMG_WIDTH, IMG_HEIGHT, false) //to be used for feature extraction and
+        // classification
         photoPreview.setImageBitmap(it)
+        val featureExtractor = LocalBinaryPatterns().apply {
+          setNeighborhoodSize(8)
+          numPoints = 8
+          radius = 1.0
+          numberOfHistogramBins = 11
+        }
       }
     }
   }
