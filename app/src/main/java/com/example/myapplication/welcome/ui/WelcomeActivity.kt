@@ -2,7 +2,6 @@ package com.example.myapplication.welcome.ui
 
 import android.Manifest
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -12,7 +11,6 @@ import android.provider.MediaStore
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.getSystemService
 import com.example.myapplication.R
 import com.example.myapplication.common.IMG_HEIGHT
 import com.example.myapplication.common.IMG_WIDTH
@@ -20,18 +18,13 @@ import com.example.myapplication.common.RC_CAMERA_PERMISSION
 import com.example.myapplication.common.RC_CAPTURE_IMAGE
 import com.example.myapplication.welcome.WelcomeContract.WelcomePresenter
 import com.example.myapplication.welcome.WelcomeContract.WelcomeView
-import de.lmu.ifi.dbs.jfeaturelib.features.LocalBinaryPatterns
-import ij.process.ImageProcessor
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
-import weka.classifiers.Classifier
-import weka.classifiers.pmml.consumer.SupportVectorMachineModel
-import weka.classifiers.trees.RandomForest
-import weka.core.neighboursearch.NearestNeighbourSearch
 
 class WelcomeActivity : AppCompatActivity(), WelcomeView {
   
   private val presenter: WelcomePresenter by inject()
+  private val imagePixels = intArrayOf()
   
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -75,15 +68,10 @@ class WelcomeActivity : AppCompatActivity(), WelcomeView {
     if (requestCode == RC_CAPTURE_IMAGE && resultCode == Activity.RESULT_OK) {
       val image = data?.extras?.get("data") as? Bitmap
       image?.let {
-        val resizedImage = Bitmap.createScaledBitmap(it, IMG_WIDTH, IMG_HEIGHT, false) //to be used for feature extraction and
-        // classification
+        val resizedImage = Bitmap.createScaledBitmap(it, IMG_WIDTH, IMG_HEIGHT, false)
+            .apply { getPixels(imagePixels, 0, this.width, 0, 0, 150, 150) }
+        
         photoPreview.setImageBitmap(it)
-        val featureExtractor = LocalBinaryPatterns().apply {
-          setNeighborhoodSize(8)
-          numPoints = 8
-          radius = 1.0
-          numberOfHistogramBins = 11
-        }
       }
     }
   }

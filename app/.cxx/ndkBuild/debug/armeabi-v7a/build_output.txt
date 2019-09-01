@@ -1,0 +1,11 @@
+Android NDK: OpenCV: You should ignore warning about 'non-system libraries in linker flags' and 'opencv_java' library.    
+Android NDK:         'OPENCV_INSTALL_MODULES:=on' can be used to build APK with included OpenCV binaries    
+rm -f /Users/lkordic/AndroidStudioProjects/Signature-detector-classic/app/build/intermediates/ndkBuild/debug/lib/armeabi-v7a/*
+rm -f /Users/lkordic/AndroidStudioProjects/Signature-detector-classic/app/build/intermediates/ndkBuild/debug/lib/armeabi-v7a/gdbserver
+rm -f /Users/lkordic/AndroidStudioProjects/Signature-detector-classic/app/build/intermediates/ndkBuild/debug/lib/armeabi-v7a/gdb.setup
+mkdir -p /Users/lkordic/AndroidStudioProjects/Signature-detector-classic/app/build/intermediates/ndkBuild/debug/lib/armeabi-v7a
+echo [armeabi-v7a] "Gdbserver      ": "[arm-linux-androideabi] /Users/lkordic/AndroidStudioProjects/Signature-detector-classic/app/build/intermediates/ndkBuild/debug/lib/armeabi-v7a/gdbserver"
+install -p /Users/lkordic/Library/Android/sdk/ndk/20.0.5594570/prebuilt/android-arm/gdbserver/gdbserver /Users/lkordic/AndroidStudioProjects/Signature-detector-classic/app/build/intermediates/ndkBuild/debug/lib/armeabi-v7a/gdbserver
+echo [armeabi-v7a] "Gdbsetup       ": "/Users/lkordic/AndroidStudioProjects/Signature-detector-classic/app/build/intermediates/ndkBuild/debug/lib/armeabi-v7a/gdb.setup"
+echo "set solib-search-path /Users/lkordic/AndroidStudioProjects/Signature-detector-classic/app/build/intermediates/ndkBuild/debug/obj/local/armeabi-v7a" > /Users/lkordic/AndroidStudioProjects/Signature-detector-classic/app/build/intermediates/ndkBuild/debug/lib/armeabi-v7a/gdb.setup
+echo "directory /Users/lkordic/Library/Android/sdk/ndk/20.0.5594570/toolchains/llvm/prebuilt/darwin-x86_64/sysroot /Users/lkordic/Library/Android/sdk/ndk/20.0.5594570/sources/cxx-stl/system" >> /Users/lkordic/AndroidStudioProjects/Signature-detector-classic/app/build/intermediates/ndkBuild/debug/lib/armeabi-v7a/gdb.setup

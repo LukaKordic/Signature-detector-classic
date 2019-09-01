@@ -1,0 +1,11 @@
+Android NDK: OpenCV: You should ignore warning about 'non-system libraries in linker flags' and 'opencv_java' library.    
+Android NDK:         'OPENCV_INSTALL_MODULES:=on' can be used to build APK with included OpenCV binaries    
+rm -f /Users/lkordic/AndroidStudioProjects/Signature-detector-classic/app/build/intermediates/ndkBuild/debug/lib/x86_64/*
+rm -f /Users/lkordic/AndroidStudioProjects/Signature-detector-classic/app/build/intermediates/ndkBuild/debug/lib/x86_64/gdbserver
+rm -f /Users/lkordic/AndroidStudioProjects/Signature-detector-classic/app/build/intermediates/ndkBuild/debug/lib/x86_64/gdb.setup
+mkdir -p /Users/lkordic/AndroidStudioProjects/Signature-detector-classic/app/build/intermediates/ndkBuild/debug/lib/x86_64
+echo [x86_64] "Gdbserver      ": "[x86_64-linux-android] /Users/lkordic/AndroidStudioProjects/Signature-detector-classic/app/build/intermediates/ndkBuild/debug/lib/x86_64/gdbserver"
+install -p /Users/lkordic/Library/Android/sdk/ndk/20.0.5594570/prebuilt/android-x86_64/gdbserver/gdbserver /Users/lkordic/AndroidStudioProjects/Signature-detector-classic/app/build/intermediates/ndkBuild/debug/lib/x86_64/gdbserver
+echo [x86_64] "Gdbsetup       ": "/Users/lkordic/AndroidStudioProjects/Signature-detector-classic/app/build/intermediates/ndkBuild/debug/lib/x86_64/gdb.setup"
+echo "set solib-search-path /Users/lkordic/AndroidStudioProjects/Signature-detector-classic/app/build/intermediates/ndkBuild/debug/obj/local/x86_64" > /Users/lkordic/AndroidStudioProjects/Signature-detector-classic/app/build/intermediates/ndkBuild/debug/lib/x86_64/gdb.setup
+echo "directory /Users/lkordic/Library/Android/sdk/ndk/20.0.5594570/toolchains/llvm/prebuilt/darwin-x86_64/sysroot /Users/lkordic/Library/Android/sdk/ndk/20.0.5594570/sources/cxx-stl/system" >> /Users/lkordic/AndroidStudioProjects/Signature-detector-classic/app/build/intermediates/ndkBuild/debug/lib/x86_64/gdb.setup
