@@ -29,6 +29,10 @@ android {
     sourceSets { main { aidl.srcDirs = ['src/main/aidl', 'src/main/jniLibs/'] } }
 }
 
+ext {
+    coroutinesVersion = "1.2.1"
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -41,10 +45,13 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
+    //coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
+
     //koin
     implementation 'org.koin:koin-android:2.0.1'
 
     //ml
     implementation files('libs/wekaSTRIPPED.jar')
-    implementation project(path: ':opencv')
 }

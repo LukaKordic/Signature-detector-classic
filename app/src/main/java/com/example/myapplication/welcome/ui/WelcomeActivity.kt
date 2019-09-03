@@ -12,10 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.myapplication.R
-import com.example.myapplication.common.IMG_HEIGHT
-import com.example.myapplication.common.IMG_WIDTH
-import com.example.myapplication.common.RC_CAMERA_PERMISSION
-import com.example.myapplication.common.RC_CAPTURE_IMAGE
+import com.example.myapplication.common.*
 import com.example.myapplication.welcome.WelcomeContract.WelcomePresenter
 import com.example.myapplication.welcome.WelcomeContract.WelcomeView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -24,7 +21,6 @@ import org.koin.android.ext.android.inject
 class WelcomeActivity : AppCompatActivity(), WelcomeView {
   
   private val presenter: WelcomePresenter by inject()
-  private val imagePixels = intArrayOf()
   
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -68,10 +64,11 @@ class WelcomeActivity : AppCompatActivity(), WelcomeView {
     if (requestCode == RC_CAPTURE_IMAGE && resultCode == Activity.RESULT_OK) {
       val image = data?.extras?.get("data") as? Bitmap
       image?.let {
-        val resizedImage = Bitmap.createScaledBitmap(it, IMG_WIDTH, IMG_HEIGHT, false)
-            .apply { getPixels(imagePixels, 0, this.width, 0, 0, 150, 150) }
-        
         photoPreview.setImageBitmap(it)
+        val image2D = convertImageTo2DArray(it)
+        val lbp = LBP(8, 1)
+        val lbpResult = lbp.getLBP(image2D)
+        printMatrix(lbpResult)
       }
     }
   }
