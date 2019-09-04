@@ -17,16 +17,21 @@ import com.example.myapplication.welcome.WelcomeContract.WelcomePresenter
 import com.example.myapplication.welcome.WelcomeContract.WelcomeView
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
+import weka.classifiers.Classifier
+import weka.core.SerializationHelper
+import java.io.IOException
 
 class WelcomeActivity : AppCompatActivity(), WelcomeView {
   
   private val presenter: WelcomePresenter by inject()
+  private lateinit var classifier: Classifier
   
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
     presenter.setView(this)
     capturePhoto.setOnClickListener { presenter.capturePhotoClicked() }
+    loadModel()
   }
   
   private fun requestCameraPermission() = ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA),
@@ -67,9 +72,22 @@ class WelcomeActivity : AppCompatActivity(), WelcomeView {
         photoPreview.setImageBitmap(it)
         val image2D = convertImageTo2DArray(it)
         val lbp = LBP(8, 1)
+        val test = lbp.reshape(image2D, 0, 149, 0, 149)
         val lbpResult = lbp.getLBP(image2D)
+        val hist = lbp.histc(test)
+        hist.forEach { print("$it  ") }
         printMatrix(lbpResult)
       }
     }
+  }
+  
+  private fun loadModel() {
+    val assetManager = assets
+    try {
+      classifier = SerializationHelper.read(assetManager.open("svm_weka.model")) as Classifier
+    } catch (e: IOException) {
+      e.printStackTrace()
+    }
+    println("Model loaded")
   }
 }

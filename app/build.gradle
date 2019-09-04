@@ -26,7 +26,11 @@ android {
             path file('../../../Downloads/OpenCV-android-sdk/sdk/native/jni/OpenCV.mk')
         }
     }
-    sourceSets { main { aidl.srcDirs = ['src/main/aidl', 'src/main/jniLibs/'] } }
+    sourceSets {
+        main {
+            aidl.srcDirs = ['src/main/aidl', 'src/main/jniLibs/']
+        }
+    }
 }
 
 ext {
