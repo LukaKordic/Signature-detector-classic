@@ -3,7 +3,7 @@ package com.example.myapplication.common
 import java.text.DecimalFormat
 
 class LBP(private val samples: Int, private val radius: Int) {
-  private val mapping: ByteArray
+  private val mapping: DoubleArray
   private val neighbourhood: Array<DoubleArray>
   var cutPoints: DoubleArray = DoubleArray(samples + 2)
   
@@ -17,10 +17,10 @@ class LBP(private val samples: Int, private val radius: Int) {
     
   }
   
-  fun getLBP(data: Array<DoubleArray>): Array<ByteArray> {
+  fun getLBP(data: Array<DoubleArray>): Array<DoubleArray> {
     val width = data.size
     val height = data[0].size
-    val lbpSlice = Array(width) { ByteArray(height) }
+    val lbpSlice = Array(width) { DoubleArray(height) }
     /*Calculate the lbp*/
     val coordinates = IntArray(2)
     for (i in 0 + radius until width - radius) {
@@ -35,7 +35,7 @@ class LBP(private val samples: Int, private val radius: Int) {
     return lbpSlice
   }
   
-  private fun lbpBlock(data: Array<DoubleArray>, coordinates: IntArray): Byte {
+  private fun lbpBlock(data: Array<DoubleArray>, coordinates: IntArray): Double {
     var lbpValue = 0
     val x = coordinates[0].toDouble()
     val y = coordinates[1].toDouble()
@@ -79,7 +79,7 @@ class LBP(private val samples: Int, private val radius: Int) {
       if (values[i] == cutPoints[cutPoints.size - 1]) {
         j = j + 1
       }
-      //System.out.println("ind "+i+ " val "+values[i]+" bin "+j+" from "+cutPoints[j]);
+      println("ind " + i + " val " + values[i] + " bin " + j + " from " + cutPoints[j])
       histogram[j] += 1.0
     }
     histogram = arrDiv(histogram, sum(histogram))
@@ -129,9 +129,9 @@ class LBP(private val samples: Int, private val radius: Int) {
   companion object {
     
     /*Mapping to rotation invariant uniform patterns: riu2 in getmapping.m*/
-    private fun getMapping(samples: Int): ByteArray {
+    private fun getMapping(samples: Int): DoubleArray {
       val bitMaskLength = Math.pow(2.0, samples.toDouble()).toInt()
-      val table = ByteArray(bitMaskLength)
+      val table = DoubleArray(bitMaskLength)
       var j: Int
       var sampleBitMask = 0
       for (i in 0 until samples) {
@@ -149,10 +149,10 @@ class LBP(private val samples: Int, private val radius: Int) {
         
         if (numt <= 2) {
           for (k in 0 until samples) {
-            table[i] = table[i].plus(i shr k and 1).toByte()
+            table[i] = table[i].plus(i shr k and 1)
           }
         } else {
-          table[i] = (samples + 1).toByte()
+          table[i] = (samples + 1).toDouble()
         }
       }
       return table

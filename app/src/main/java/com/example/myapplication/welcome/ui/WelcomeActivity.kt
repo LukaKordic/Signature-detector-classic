@@ -72,11 +72,11 @@ class WelcomeActivity : AppCompatActivity(), WelcomeView {
         photoPreview.setImageBitmap(it)
         val image2D = convertImageTo2DArray(it)
         val lbp = LBP(8, 1)
-        val test = lbp.reshape(image2D, 0, 149, 0, 149)
         val lbpResult = lbp.getLBP(image2D)
-        val hist = lbp.histc(test)
-        hist.forEach { print("$it  ") }
-        printMatrix(lbpResult)
+        val test = lbp.reshape(lbpResult, 0, 148, 0, 148)
+        val histArray = lbp.histc(test)
+        println()
+//        printMatrix(lbpResult)
       }
     }
   }

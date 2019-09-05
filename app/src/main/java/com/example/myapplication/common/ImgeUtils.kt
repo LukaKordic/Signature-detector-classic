@@ -11,6 +11,7 @@ import java.text.DecimalFormat
 fun convertImageTo2DArray(image: Bitmap): Array<DoubleArray> {
   val imageMatrix = Array(150) { DoubleArray(150) }
   val resizedImage = resizeImage(image)
+  val f = DecimalFormat("0.#")
   
   GlobalScope.launch {
     for (x in 0 until IMG_WIDTH) {
@@ -22,8 +23,9 @@ fun convertImageTo2DArray(image: Bitmap): Array<DoubleArray> {
         val gray = (red + green + blue) / 3
         
         imageMatrix[x][y] = gray.toDouble()
-//        println(gray)
+//        print(f.format(imageMatrix[x][y]) + "\t")
       }
+//      println()
     }
   }
   return imageMatrix
