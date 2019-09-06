@@ -7,6 +7,8 @@ interface ContentContract {
   interface View {
     fun showRepositories(repos: List<Repository>)
     fun showError(error: String)
+    fun showLoading()
+    fun hideLoading()
   }
   
   interface Presenter {
