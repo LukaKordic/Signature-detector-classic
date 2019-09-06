@@ -8,5 +8,5 @@ import org.koin.dsl.module
 
 val presentationModule = module {
   factory<WelcomeContract.WelcomePresenter> { WelcomePresenterImpl() }
-  factory<ContentContract.Presenter> { ContentPresenter() }
+  factory<ContentContract.Presenter> { ContentPresenter(get()) }
 }

@@ -14,14 +14,18 @@
     android:supportsRtl="true"
     android:theme="@style/AppTheme"
     tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-    <activity android:name=".content.ui.ContentActivity"></activity>
-    <activity android:name=".welcome.ui.WelcomeActivity">
+    <activity
+      android:name=".content.ui.ContentActivity"
+      android:screenOrientation="portrait">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
 
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
+    <activity
+      android:name=".welcome.ui.WelcomeActivity"
+      android:screenOrientation="portrait"/>
   </application>
 
 </manifest>
