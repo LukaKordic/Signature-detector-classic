@@ -1,12 +1,12 @@
 package com.example.myapplication.networking
 
-import com.example.myapplication.networking.model.RepoResponse
+import com.example.myapplication.networking.model.Repository
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface GithubApi {
   
-  @GET("{user}/repos")
-  fun getRepositories(@Path("user") user: String): Call<RepoResponse>
+  @GET("users/{user}/repos")
+  fun getRepositories(@Path("user") user: String): Call<List<Repository>>
 }

@@ -1,12 +1,12 @@
 package com.example.myapplication.content.interaction
 
-import com.example.myapplication.networking.model.RepoResponse
+import com.example.myapplication.networking.model.Repository
 
 interface GithubInteractor {
   
   fun fetchRepositories(
       user: String,
-      onSuccess: (RepoResponse) -> Unit,
+      onSuccess: (List<Repository>) -> Unit,
       onError: (Throwable) -> Unit
   )
 }
