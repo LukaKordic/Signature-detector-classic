@@ -58,4 +58,9 @@ dependencies {
 
     //ml
     implementation files('libs/wekaSTRIPPED.jar')
+
+    //networking
+    implementation 'com.squareup.retrofit2:retrofit:2.6.1'
+    implementation "com.squareup.retrofit2:converter-gson:2.6.1"
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
 }
