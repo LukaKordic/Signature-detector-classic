@@ -31,7 +31,7 @@ class WelcomeActivity : AppCompatActivity(), WelcomeView {
     setContentView(R.layout.activity_main)
     presenter.setView(this)
     capturePhoto.setOnClickListener { presenter.capturePhotoClicked() }
-    loadModel()
+    parseCsv()
   }
   
   private fun requestCameraPermission() = ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA),
@@ -81,13 +81,18 @@ class WelcomeActivity : AppCompatActivity(), WelcomeView {
     }
   }
   
-  private fun loadModel() {
-    val assetManager = assets
-    try {
-      classifier = SerializationHelper.read(assetManager.open("svm_weka.model")) as Classifier
-    } catch (e: IOException) {
-      e.printStackTrace()
-    }
-    println("Model loaded")
+  private fun parseCsv() {
+    val inputStream = resources.openRawResource(R.raw.signature_features)
+    CSVFile(inputStream).read()
   }
+
+//  private fun loadModel() {
+//    val assetManager = assets
+//    try {
+//      classifier = SerializationHelper.read(assetManager.open("svm_weka.model")) as Classifier
+//    } catch (e: IOException) {
+//      e.printStackTrace()
+//    }
+//    println("Model loaded")
+//  }
 }
