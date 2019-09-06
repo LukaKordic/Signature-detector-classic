@@ -1,6 +1,7 @@
 package com.example.myapplication.content.ui
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,6 +32,14 @@ class ContentActivity : AppCompatActivity(), ContentContract.View {
   
   override fun showError(error: String) {
     Toast.makeText(this, error, Toast.LENGTH_LONG).show()
+  }
+  
+  override fun showLoading() {
+    loading.visibility = View.VISIBLE
+  }
+  
+  override fun hideLoading() {
+    loading.visibility = View.GONE
   }
   
   private fun initList() = with(repoList) {

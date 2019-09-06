@@ -10,4 +10,6 @@ class WelcomePresenterImpl : WelcomeContract.WelcomePresenter {
   }
   
   override fun capturePhotoClicked() = view.checkCameraPermission()
+  
+  override fun loadImageClicked() = view.checkReadStoragePermission()
 }

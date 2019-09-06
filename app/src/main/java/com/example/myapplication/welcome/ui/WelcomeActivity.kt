@@ -15,27 +15,20 @@ import com.example.myapplication.R
 import com.example.myapplication.common.*
 import com.example.myapplication.welcome.WelcomeContract.WelcomePresenter
 import com.example.myapplication.welcome.WelcomeContract.WelcomeView
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_welcome.*
 import org.koin.android.ext.android.inject
-import weka.classifiers.Classifier
-import weka.core.SerializationHelper
-import java.io.IOException
 
 class WelcomeActivity : AppCompatActivity(), WelcomeView {
   
   private val presenter: WelcomePresenter by inject()
-  private lateinit var classifier: Classifier
   
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_main)
+    setContentView(R.layout.activity_welcome)
     presenter.setView(this)
-    capturePhoto.setOnClickListener { presenter.capturePhotoClicked() }
+    initClickActions()
     parseCsv()
   }
-  
-  private fun requestCameraPermission() = ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA),
-                                                                            RC_CAMERA_PERMISSION)
   
   override fun checkCameraPermission() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -47,6 +40,19 @@ class WelcomeActivity : AppCompatActivity(), WelcomeView {
     } else {
       // permission is granted upon installation on versions lower than Marshmallow
       openCamera()
+    }
+  }
+  
+  override fun checkReadStoragePermission() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+      // permission is not granted, ask for it
+        requestReadStoragePermission()
+      else
+        launchGallery()
+    } else {
+      // permission is granted upon installation on versions lower than Marshmallow
+      launchGallery()
     }
   }
   
@@ -64,22 +70,51 @@ class WelcomeActivity : AppCompatActivity(), WelcomeView {
     }
   }
   
-  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-    super.onActivityResult(requestCode, resultCode, data)
-    if (requestCode == RC_CAPTURE_IMAGE && resultCode == Activity.RESULT_OK) {
-      val image = data?.extras?.get("data") as? Bitmap
-      image?.let {
-        photoPreview.setImageBitmap(it)
-        val image2D = convertImageTo2DArray(it)
-        val lbp = LBP(8, 1)
-        val lbpResult = lbp.getLBP(image2D)
-        val test = lbp.reshape(lbpResult, 0, 148, 0, 148)
-        val histArray = lbp.histc(test)
-        println()
-//        printMatrix(lbpResult)
+  override fun launchGallery() {
+    Intent(Intent.ACTION_PICK).apply {
+      type = "image/*"
+      putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("image/jpeg", "image/png"))
+    }.run {
+      resolveActivity(packageManager)?.also {
+        startActivityForResult(this, RC_LOAD_IMAGE)
       }
     }
   }
+  
+  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    super.onActivityResult(requestCode, resultCode, data)
+    if (resultCode == Activity.RESULT_OK) {
+      when (requestCode) {
+        RC_CAPTURE_IMAGE -> {
+          val image = data?.extras?.get("data") as? Bitmap
+          image?.let {
+            photoPreview.setImageBitmap(it)
+            val image2D = convertImageTo2DArray(it)
+            val lbp = LBP(8, 1)
+            val lbpResult = lbp.getLBP(image2D)
+            val test = lbp.reshape(lbpResult, 0, 148, 0, 148)
+            val histArray = lbp.histc(test)
+            println()
+//        printMatrix(lbpResult)
+          }
+        }
+        RC_LOAD_IMAGE -> {
+          //TODO
+        }
+      }
+    }
+  }
+  
+  private fun initClickActions() {
+    capturePhoto.setOnClickListener { presenter.capturePhotoClicked() }
+    loadFromGallery.setOnClickListener { presenter.loadImageClicked() }
+  }
+  
+  private fun requestCameraPermission() = ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA),
+                                                                            RC_CAMERA_PERMISSION)
+  
+  private fun requestReadStoragePermission() =
+      ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), RC_STORAGE_PERMISSION)
   
   private fun parseCsv() {
     val inputStream = resources.openRawResource(R.raw.signature_features)

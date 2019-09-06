@@ -17,6 +17,18 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent" />
 
+  <Button
+    android:id="@+id/loadFromGallery"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/load_image_button_text"
+    android:textAllCaps="false"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/capturePhoto"
+    app:layout_constraintVertical_bias="0.15" />
+
   <ImageView
     android:id="@+id/photoPreview"
     android:layout_width="300dp"
