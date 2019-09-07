@@ -41,6 +41,17 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent" />
 
+  <com.google.android.gms.common.SignInButton
+    android:id="@+id/googleSignInBtn"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="20dp"
+    app:buttonSize="icon_only"
+    app:layout_constraintBottom_toTopOf="@id/recognize"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/loadFromGallery" />
+
   <Button
     android:id="@+id/recognize"
     android:layout_width="0dp"

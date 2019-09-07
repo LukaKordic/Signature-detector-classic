@@ -1,5 +1,7 @@
 package com.example.myapplication.content.ui
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -11,6 +13,8 @@ import com.example.myapplication.content.ui.list.RepoAdapter
 import com.example.myapplication.networking.model.Repository
 import kotlinx.android.synthetic.main.activity_content.*
 import org.koin.android.ext.android.inject
+
+fun startContentActivity(from: Context) = from.startActivity(Intent(from, ContentActivity::class.java))
 
 class ContentActivity : AppCompatActivity(), ContentContract.View {
   

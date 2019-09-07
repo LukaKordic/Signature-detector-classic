@@ -14,8 +14,12 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.myapplication.R
 import com.example.myapplication.common.*
+import com.example.myapplication.content.ui.ContentActivity
+import com.example.myapplication.content.ui.startContentActivity
 import com.example.myapplication.welcome.WelcomeContract.WelcomePresenter
 import com.example.myapplication.welcome.WelcomeContract.WelcomeView
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import kotlinx.android.synthetic.main.activity_welcome.*
 import org.koin.android.ext.android.inject
 import java.io.FileNotFoundException
@@ -24,11 +28,17 @@ class WelcomeActivity : AppCompatActivity(), WelcomeView {
   
   private val presenter: WelcomePresenter by inject()
   private lateinit var image: Bitmap
+  private val currentUser by lazy { GoogleSignIn.getLastSignedInAccount(this) }
+  private val signInOptions by lazy {
+    GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build()
+  }
+  private val signInClient by lazy { GoogleSignIn.getClient(this, signInOptions) }
   
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_welcome)
     presenter.setView(this)
+    initGoogleLogin()
     initClickActions()
     disableRecognizeButton()
 //    parseCsv()
@@ -114,8 +124,28 @@ class WelcomeActivity : AppCompatActivity(), WelcomeView {
             }
           }
         }
+        RC_SIGN_IN -> {
+          startContentActivity(this)
+          finish()
+        }
       }
     }
+  }
+  
+  private fun initGoogleLogin() {
+    if (currentUser != null) {
+      startContentActivity(this)
+      finish()
+    } else {
+      googleSignInBtn.setOnClickListener {
+        signIn()
+      }
+    }
+  }
+  
+  private fun signIn() {
+    val intent = signInClient.signInIntent
+    startActivityForResult(intent, RC_SIGN_IN)
   }
   
   private fun initClickActions() {
