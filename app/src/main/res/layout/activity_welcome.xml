@@ -40,4 +40,18 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent" />
+
+  <Button
+    android:id="@+id/recognize"
+    android:layout_width="0dp"
+    android:layout_height="54dp"
+    android:layout_margin="20dp"
+    android:background="@color/colorPrimary"
+    android:enabled="false"
+    android:text="@string/recognize"
+    android:textAllCaps="false"
+    android:textColor="@color/white"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

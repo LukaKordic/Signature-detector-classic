@@ -1,5 +1,7 @@
 package com.example.myapplication.welcome
 
+import android.graphics.Bitmap
+
 interface WelcomeContract {
   
   interface WelcomeView {
@@ -13,5 +15,6 @@ interface WelcomeContract {
     fun setView(view: WelcomeView)
     fun capturePhotoClicked()
     fun loadImageClicked()
+    fun recognizeClicked(image: Bitmap)
   }
 }

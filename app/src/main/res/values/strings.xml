@@ -3,4 +3,5 @@
   <string name="take_photo_button_text">Take a photo</string>
   <string name="photo_preview_content_description">Preview Image</string>
   <string name="load_image_button_text">Load image from gallery</string>
+  <string name="recognize">Recognize</string>
 </resources>

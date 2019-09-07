@@ -23,13 +23,15 @@ import java.io.FileNotFoundException
 class WelcomeActivity : AppCompatActivity(), WelcomeView {
   
   private val presenter: WelcomePresenter by inject()
+  private lateinit var image: Bitmap
   
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_welcome)
     presenter.setView(this)
     initClickActions()
-    parseCsv()
+    disableRecognizeButton()
+//    parseCsv()
   }
   
   override fun checkCameraPermission() {
@@ -94,13 +96,8 @@ class WelcomeActivity : AppCompatActivity(), WelcomeView {
           val image = data?.extras?.get("data") as? Bitmap
           image?.let {
             photoPreview.setImageBitmap(it)
-            val image2D = convertImageTo2DArray(it)
-            val lbp = LBP(8, 1)
-            val lbpResult = lbp.getLBP(image2D)
-            val test = lbp.reshape(lbpResult, 0, 148, 0, 148)
-            val histArray = lbp.histc(test)
-            println()
-//        printMatrix(lbpResult)
+            this.image = it
+            enableRecognizeButton()
           }
         }
         RC_LOAD_IMAGE -> {
@@ -109,7 +106,9 @@ class WelcomeActivity : AppCompatActivity(), WelcomeView {
             try {
               val inputStream = contentResolver.openInputStream(it)
               val selectedImage = BitmapFactory.decodeStream(inputStream)
+              this.image = selectedImage
               photoPreview.setImageBitmap(selectedImage)
+              enableRecognizeButton()
             } catch (ex: FileNotFoundException) {
               ex.printStackTrace()
             }
@@ -122,6 +121,7 @@ class WelcomeActivity : AppCompatActivity(), WelcomeView {
   private fun initClickActions() {
     capturePhoto.setOnClickListener { presenter.capturePhotoClicked() }
     loadFromGallery.setOnClickListener { presenter.loadImageClicked() }
+    recognize.setOnClickListener { presenter.recognizeClicked(image) }
   }
   
   private fun requestCameraPermission() = ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA),
@@ -133,6 +133,16 @@ class WelcomeActivity : AppCompatActivity(), WelcomeView {
   private fun parseCsv() {
     val inputStream = resources.openRawResource(R.raw.signature_features)
     CSVFile(inputStream).read()
+  }
+  
+  private fun disableRecognizeButton() = with(recognize) {
+    isEnabled = false
+    setBackgroundColor(resources.getColor(R.color.gray))
+  }
+  
+  private fun enableRecognizeButton() = with(recognize) {
+    isEnabled = true
+    setBackgroundColor(resources.getColor(R.color.colorPrimary))
   }
 
 //  private fun loadModel() {
