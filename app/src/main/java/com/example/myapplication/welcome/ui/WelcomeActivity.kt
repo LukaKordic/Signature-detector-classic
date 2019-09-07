@@ -2,6 +2,7 @@ package com.example.myapplication.welcome.ui
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -22,6 +23,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import kotlinx.android.synthetic.main.activity_welcome.*
 import org.koin.android.ext.android.inject
 import java.io.FileNotFoundException
+
+fun startWelcomeActivity(from: Context) = from.startActivity(Intent(from, WelcomeActivity::class.java))
 
 class WelcomeActivity : AppCompatActivity(), WelcomeView {
   
