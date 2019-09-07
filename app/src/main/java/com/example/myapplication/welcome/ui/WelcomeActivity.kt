@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -17,6 +18,7 @@ import com.example.myapplication.welcome.WelcomeContract.WelcomePresenter
 import com.example.myapplication.welcome.WelcomeContract.WelcomeView
 import kotlinx.android.synthetic.main.activity_welcome.*
 import org.koin.android.ext.android.inject
+import java.io.FileNotFoundException
 
 class WelcomeActivity : AppCompatActivity(), WelcomeView {
   
@@ -57,8 +59,11 @@ class WelcomeActivity : AppCompatActivity(), WelcomeView {
   }
   
   override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-    if (requestCode == RC_CAMERA_PERMISSION && permissions.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-      openCamera()
+    if (requestCode == RC_CAMERA_PERMISSION && permissions.isNotEmpty()) {
+      if (grantResults[0] == PackageManager.PERMISSION_GRANTED) openCamera()
+      if (grantResults[1] == PackageManager.PERMISSION_GRANTED) launchGallery()
+    }
+    
   }
   
   override fun openCamera() {
@@ -99,7 +104,16 @@ class WelcomeActivity : AppCompatActivity(), WelcomeView {
           }
         }
         RC_LOAD_IMAGE -> {
-          //TODO
+          val imageUri = data?.data
+          imageUri?.let {
+            try {
+              val inputStream = contentResolver.openInputStream(it)
+              val selectedImage = BitmapFactory.decodeStream(inputStream)
+              photoPreview.setImageBitmap(selectedImage)
+            } catch (ex: FileNotFoundException) {
+              ex.printStackTrace()
+            }
+          }
         }
       }
     }
