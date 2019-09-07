@@ -5,6 +5,7 @@
       "sdkFolder": "/Users/lkordic/Library/Android/sdk",
       "isNativeCompilerSettingsCacheEnabled": false,
       "isBuildOnlyTargetAbiEnabled": true,
+      "ideBuildTargetAbi": "x86",
       "splitsAbiFilterSet": [],
       "intermediatesFolder": "/Users/lkordic/AndroidStudioProjects/Signature-detector-classic/app/build/intermediates",
       "gradleModulePathName": ":app",
@@ -39,10 +40,7 @@
     "gradleBuildOutputFolder": "/Users/lkordic/AndroidStudioProjects/Signature-detector-classic/app/.cxx/cxx/debug",
     "isDebuggableEnabled": true,
     "validAbiList": [
-      "ARMEABI_V7A",
-      "ARM64_V8A",
-      "X86",
-      "X86_64"
+      "X86"
     ],
     "buildTargetSet": []
   },

@@ -6,9 +6,9 @@
   android:layout_height="wrap_content">
 
   <ImageView
-    android:id="@+id/repoImage"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:id="@+id/userImage"
+    android:layout_width="@dimen/avatar_image_width"
+    android:layout_height="@dimen/avatar_image_height"
     android:layout_margin="16dp"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintStart_toStartOf="parent"
@@ -25,8 +25,17 @@
     android:textSize="18sp"
     android:textStyle="bold"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toEndOf="@id/repoImage"
-    app:layout_constraintTop_toTopOf="@id/repoImage"
+    app:layout_constraintStart_toEndOf="@id/userImage"
+    app:layout_constraintTop_toTopOf="@id/userImage"
     tools:text="Signature classifier" />
+
+  <TextView
+    android:id="@+id/userName"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    app:layout_constraintStart_toEndOf="@id/userImage"
+    app:layout_constraintTop_toBottomOf="@id/repoName"
+    tools:text="userName" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,7 +10,8 @@ import kotlinx.android.synthetic.main.repo_item_layout.view.*
 class RepoViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
   
   fun bind(data: Repository) = with(containerView) {
-    Glide.with(this).load(data.image).into(repoImage)
     repoName.text = data.name
+    userName.text = data.owner.login
+    Glide.with(this).load(data.owner.avatar_url).into(userImage)
   }
 }
