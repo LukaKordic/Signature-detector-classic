@@ -2,7 +2,10 @@
   <string name="app_name">SigDetector</string>
   <string name="take_photo_button_text">Take a photo</string>
   <string name="photo_preview_content_description">Preview Image</string>
-  <string name="load_image_button_text">Load image from gallery</string>
+  <string name="open_gallery">Open gallery</string>
   <string name="recognize">Recognize</string>
   <string name="sign_out">Sign out</string>
+    <string name="load_image_for_recognition">Load image for recognition:</string>
+    <string name="or">OR</string>
+    <string name="logo_view">Logo view</string>
 </resources>
