@@ -23,16 +23,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    externalNativeBuild {
-        ndkBuild {
-            path file('../../../Downloads/OpenCV-android-sdk/sdk/native/jni/OpenCV.mk')
-        }
-    }
-    sourceSets {
-        main {
-            aidl.srcDirs = ['src/main/aidl', 'src/main/jniLibs/']
-        }
-    }
 }
 
 ext {

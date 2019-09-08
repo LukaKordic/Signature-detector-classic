@@ -1,5 +1,5 @@
 {
-  "ndkFolder": "/Users/lkordic/Library/Android/sdk/ndk/20.0.5594570",
+  "ndkFolder": "/Users/gabrielaangebrandt/Library/Android/sdk/ndk/20.0.5594570",
   "messages": [
     {
       "level": "INFO",
@@ -7,7 +7,7 @@
     },
     {
       "level": "INFO",
-      "message": "ndk.dir in local.properties is /Users/lkordic/Library/Android/sdk/ndk/20.0.5594570"
+      "message": "ndk.dir in local.properties is not set"
     },
     {
       "level": "INFO",
@@ -15,27 +15,23 @@
     },
     {
       "level": "INFO",
-      "message": "sdkFolder is /Users/lkordic/Library/Android/sdk"
+      "message": "sdkFolder is /Users/gabrielaangebrandt/Library/Android/sdk"
     },
     {
       "level": "INFO",
-      "message": "Considering /Users/lkordic/Library/Android/sdk/ndk/20.0.5594570 by ndk.dir"
+      "message": "Considering /Users/gabrielaangebrandt/Library/Android/sdk/ndk-bundle in SDK ndk-bundle folder"
     },
     {
       "level": "INFO",
-      "message": "Considering /Users/lkordic/Library/Android/sdk/ndk-bundle in SDK ndk-bundle folder"
+      "message": "Considering /Users/gabrielaangebrandt/Library/Android/sdk/ndk/20.0.5594570 in SDK ndk folder"
     },
     {
       "level": "INFO",
-      "message": "Considering /Users/lkordic/Library/Android/sdk/ndk/20.0.5594570 in SDK ndk folder"
+      "message": "Rejected /Users/gabrielaangebrandt/Library/Android/sdk/ndk-bundle in SDK ndk-bundle folder because that location has no source.properties"
     },
     {
       "level": "INFO",
-      "message": "Rejected /Users/lkordic/Library/Android/sdk/ndk-bundle in SDK ndk-bundle folder because that location has no source.properties"
-    },
-    {
-      "level": "INFO",
-      "message": "Found requested ndk.dir (/Users/lkordic/Library/Android/sdk/ndk/20.0.5594570) which has version 20.0.5594570"
+      "message": "No user requested version, choosing /Users/gabrielaangebrandt/Library/Android/sdk/ndk/20.0.5594570 which is version 20.0.5594570"
     }
   ]
 }
