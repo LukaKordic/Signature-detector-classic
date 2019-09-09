@@ -25,7 +25,6 @@ fun convertImageTo2DArray(image: Bitmap): Array<DoubleArray> {
         imageMatrix[x][y] = gray.toDouble()
 //        print(f.format(imageMatrix[x][y]) + "\t")
       }
-//      println()
     }
   }
   return imageMatrix
@@ -40,6 +39,20 @@ fun convert2dArrayToBitmap(array: Array<DoubleArray>): Bitmap {
     }
   }
   return imageBitmap
+}
+
+fun bitmapFromArray(pixels2d: Array<IntArray>): Bitmap {
+  val width = pixels2d.size
+  val height = pixels2d[0].size
+  val pixels = IntArray(width * height)
+  var pixelsIndex = 0
+  for (i in 0 until width) {
+    for (j in 0 until height) {
+      pixels[pixelsIndex] = pixels2d[i][j]
+      pixelsIndex++
+    }
+  }
+  return Bitmap.createBitmap(pixels, width, height, Bitmap.Config.ARGB_8888)
 }
 
 private fun resizeImage(image: Bitmap): Bitmap {
@@ -61,11 +74,11 @@ fun Bitmap.toGrayscale(): Bitmap {
   return grayscale
 }
 
-fun printMatrix(matrix: Array<ByteArray>) {
+fun printMatrix(matrix: Array<DoubleArray>) {
   val f = DecimalFormat("0.#")
   for (x in matrix.indices) {
-    for (y in 0 until matrix[x].size) {
-      print(f.format(matrix[x][y]) + "\t")
+    for (element in matrix[x]) {
+      print(f.format(element) + "\t")
     }
     println()
   }

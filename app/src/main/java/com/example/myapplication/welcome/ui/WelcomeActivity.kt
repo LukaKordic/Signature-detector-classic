@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -101,6 +102,10 @@ class WelcomeActivity : AppCompatActivity(), WelcomeView {
     }
   }
   
+  override fun showResult(result: String) {
+    Toast.makeText(this, result, Toast.LENGTH_LONG).show()
+  }
+  
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     super.onActivityResult(requestCode, resultCode, data)
     if (resultCode == Activity.RESULT_OK) {
@@ -154,7 +159,9 @@ class WelcomeActivity : AppCompatActivity(), WelcomeView {
   private fun initClickActions() {
     capturePhoto.setOnClickListener { presenter.capturePhotoClicked() }
     loadFromGallery.setOnClickListener { presenter.loadImageClicked() }
-    recognize.setOnClickListener { presenter.recognizeClicked(image) }
+    recognize.setOnClickListener {
+      presenter.recognizeClicked(convertImageTo2DArray(image))
+    }
   }
   
   private fun requestCameraPermission() = ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA),
@@ -182,14 +189,4 @@ class WelcomeActivity : AppCompatActivity(), WelcomeView {
     isEnabled = true
     setBackgroundColor(resources.getColor(R.color.colorPrimary))
   }
-
-//  private fun loadModel() {
-//    val assetManager = assets
-//    try {
-//      classifier = SerializationHelper.read(assetManager.open("svm_weka.model")) as Classifier
-//    } catch (e: IOException) {
-//      e.printStackTrace()
-//    }
-//    println("Model loaded")
-//  }
 }

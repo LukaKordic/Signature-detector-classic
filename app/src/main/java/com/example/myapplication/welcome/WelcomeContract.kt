@@ -1,6 +1,5 @@
 package com.example.myapplication.welcome
 
-import android.graphics.Bitmap
 import java.io.InputStream
 
 interface WelcomeContract {
@@ -10,13 +9,14 @@ interface WelcomeContract {
     fun checkCameraPermission()
     fun checkReadStoragePermission()
     fun launchGallery()
+    fun showResult(result: String)
   }
   
   interface WelcomePresenter {
     fun setView(view: WelcomeView)
     fun capturePhotoClicked()
     fun loadImageClicked()
-    fun recognizeClicked(image: Bitmap)
+    fun recognizeClicked(image: Array<DoubleArray>)
     fun parseTrainingFeatures(inputStream: InputStream)
     fun parseTrainingLabels(inputStream: InputStream)
   }

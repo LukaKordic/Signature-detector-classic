@@ -1,10 +1,9 @@
 package com.example.myapplication.welcome.presentation
 
-import android.graphics.Bitmap
 import android.util.Log
 import com.example.myapplication.common.CSVFile
 import com.example.myapplication.common.LBP
-import com.example.myapplication.common.convertImageTo2DArray
+import com.example.myapplication.common.printMatrix
 import com.example.myapplication.welcome.WelcomeContract
 import com.example.myapplication.welcome.ml.CustomKNN
 import com.google.gson.Gson
@@ -12,14 +11,13 @@ import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
 
 class WelcomePresenterImpl : WelcomeContract.WelcomePresenter {
   private lateinit var view: WelcomeContract.WelcomeView
-  private lateinit var trainingFeatures: List<List<Double>>
+  private lateinit var trainingFeatures: List<List<Int>>
   private lateinit var labels: List<String>
   private val classifier by lazy { CustomKNN() }
   
@@ -31,16 +29,17 @@ class WelcomePresenterImpl : WelcomeContract.WelcomePresenter {
   
   override fun loadImageClicked() = view.checkReadStoragePermission()
   
-  override fun recognizeClicked(image: Bitmap) {
+  override fun recognizeClicked(image: Array<DoubleArray>) {
     GlobalScope.launch(Dispatchers.IO) {
-      val image2D = convertImageTo2DArray(image)
       val lbp = LBP(8, 1)
-      val lbpResult = lbp.getLBP(image2D)
-      val test = lbp.reshape(lbpResult, 0, 148, 0, 148)
-      val histArray = lbp.histc(test)
-//    printMatrix(lbpResult)
-      
-      classify(histArray.toList())
+      val lbpResult = lbp.getLBP(image)
+      val lbp1d = lbp.reshape(lbpResult, 0, 148, 0, 148)
+      val cutPoints = doubleArrayOf(0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0)
+      val histogram = lbp.histc(lbp1d, cutPoints)
+//      printMatrix(lbpResult)
+
+//      histogram.forEachIndexed { index, it -> println("histogram[$index]: $it ") }
+      classify(histogram.toList())
     }
   }
   

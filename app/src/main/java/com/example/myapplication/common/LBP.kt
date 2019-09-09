@@ -10,7 +10,7 @@ class LBP(private val samples: Int, private val radius: Int) {
       cutPoints[i] = i.toDouble()
     }
     mapping = getMapping(samples)
-    //System.out.println("Mapping length "+mapping.length+" samples "+samples);
+    println("Mapping length " + mapping.size + " samples " + samples)
     neighbourhood = getCircularNeighbourhood(radius, samples)
     
   }
@@ -25,12 +25,32 @@ class LBP(private val samples: Int, private val radius: Int) {
       for (j in 0 + radius until height - radius) {
         coordinates[0] = i
         coordinates[1] = j
-//        println("source x " + coordinates[0] + " y " + coordinates[1])
         lbpSlice[i][j] = lbpBlock(data, coordinates)
       }
     }
     
     return lbpSlice
+  }
+  
+  fun getLbpHist(data: Array<IntArray>): IntArray {
+    val histogram = IntArray(10)
+    for (i in data.indices) {
+      for (j in data[0].indices) {
+        when (data[i][j]) {
+          0 -> histogram[0] = histogram[0] + 1
+          1 -> histogram[1] = histogram[1] + 1
+          2 -> histogram[2] = histogram[2] + 1
+          3 -> histogram[3] = histogram[3] + 1
+          4 -> histogram[4] = histogram[4] + 1
+          5 -> histogram[5] = histogram[5] + 1
+          6 -> histogram[6] = histogram[6] + 1
+          7 -> histogram[7] = histogram[7] + 1
+          8 -> histogram[8] = histogram[8] + 1
+          9 -> histogram[9] = histogram[9] + 1
+        }
+      }
+    }
+    return histogram
   }
   
   private fun lbpBlock(data: Array<DoubleArray>, coordinates: IntArray): Double {

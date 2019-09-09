@@ -7,7 +7,7 @@ import java.io.InputStreamReader
 
 class CSVFile(private var inputStream: InputStream) {
   
-  fun read(): List<List<Double>> {
+  fun read(): List<List<Int>> {
     val resultList = mutableListOf<List<String>>()
     val rows = mutableListOf<String>()
     val reader = BufferedReader(InputStreamReader(inputStream))
@@ -22,9 +22,9 @@ class CSVFile(private var inputStream: InputStream) {
       }
     }
     
-    val doubles = mutableListOf<List<Double>>()
-    resultList.forEach { it.map { it.toDouble() }.also { doubles.add(it) } }
-    doubles.forEach { println(it) }
+    val doubles = mutableListOf<List<Int>>()
+    resultList.forEach { it.map { it.toInt() }.also { doubles.add(it) } }
+//    doubles.forEach { println(it) }
     return doubles
   }
 }
