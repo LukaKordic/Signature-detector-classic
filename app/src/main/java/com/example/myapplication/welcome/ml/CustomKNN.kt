@@ -3,7 +3,9 @@ package com.example.myapplication.welcome.ml
 import kotlin.math.pow
 import kotlin.math.sqrt
 
-class CustomKNN(private var trainingData: Array<DoubleArray>, private var labels: Array<String>) {
+class CustomKNN {
+  private lateinit var trainingData: Array<DoubleArray>
+  private lateinit var labels: Array<String>
   
   fun fit(trainingData: Array<DoubleArray>, labels: Array<String>) {
     this.trainingData = trainingData

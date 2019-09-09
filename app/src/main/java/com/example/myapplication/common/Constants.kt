@@ -9,3 +9,7 @@ const val RC_SIGN_IN = 500
 
 //NETWORK
 const val DEFAULT_USER_NAME = "lukakordic"
+
+//STRINGS
+const val ORIGINAL = "original"
+const val FAKE = "fake"

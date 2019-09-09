@@ -43,7 +43,7 @@ class WelcomeActivity : AppCompatActivity(), WelcomeView {
     initGoogleLogin()
     initClickActions()
     disableRecognizeButton()
-//    parseCsv()
+    parseCsv()
   }
   
   override fun checkCameraPermission() {
@@ -164,7 +164,7 @@ class WelcomeActivity : AppCompatActivity(), WelcomeView {
   
   private fun parseCsv() {
     val inputStream = resources.openRawResource(R.raw.signature_features)
-    CSVFile(inputStream).read()
+    presenter.parseCsvFile(inputStream)
   }
   
   private fun disableRecognizeButton() = with(recognize) {
