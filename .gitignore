@@ -85,4 +85,6 @@ output.json
 /.idea/
 /app/.idea/
 .DS_Store
+app/src/.DS_Store
+
 
