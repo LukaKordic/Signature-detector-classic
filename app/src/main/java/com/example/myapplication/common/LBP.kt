@@ -1,7 +1,5 @@
 package com.example.myapplication.common
 
-import java.text.DecimalFormat
-
 class LBP(private val samples: Int, private val radius: Int) {
   private val mapping: DoubleArray
   private val neighbourhood: Array<DoubleArray>
@@ -79,7 +77,7 @@ class LBP(private val samples: Int, private val radius: Int) {
       if (values[i] == cutPoints[cutPoints.size - 1]) {
         j = j + 1
       }
-      println("ind " + i + " val " + values[i] + " bin " + j + " from " + cutPoints[j])
+//      println("ind " + i + " val " + values[i] + " bin " + j + " from " + cutPoints[j])
       histogram[j] += 1.0
     }
     histogram = arrDiv(histogram, sum(histogram))

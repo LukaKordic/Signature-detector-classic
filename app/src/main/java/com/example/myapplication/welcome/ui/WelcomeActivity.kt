@@ -40,10 +40,11 @@ class WelcomeActivity : AppCompatActivity(), WelcomeView {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_welcome)
     presenter.setView(this)
+    parseLabels()
+    parseTrainingFeatures()
     initGoogleLogin()
     initClickActions()
     disableRecognizeButton()
-    parseCsv()
   }
   
   override fun checkCameraPermission() {
@@ -162,9 +163,14 @@ class WelcomeActivity : AppCompatActivity(), WelcomeView {
   private fun requestReadStoragePermission() =
       ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), RC_STORAGE_PERMISSION)
   
-  private fun parseCsv() {
+  private fun parseTrainingFeatures() {
     val inputStream = resources.openRawResource(R.raw.signature_features)
-    presenter.parseCsvFile(inputStream)
+    presenter.parseTrainingFeatures(inputStream)
+  }
+  
+  private fun parseLabels() {
+    val inputStream = resources.openRawResource(R.raw.signature_labels)
+    presenter.parseTrainingLabels(inputStream)
   }
   
   private fun disableRecognizeButton() = with(recognize) {
