@@ -1,6 +1,7 @@
 package com.example.myapplication.welcome.presentation
 
 import android.util.Log
+import com.example.myapplication.BuildConfig
 import com.example.myapplication.common.ResourceManager
 import com.example.myapplication.common.printMatrix
 import com.example.myapplication.welcome.WelcomeContract
@@ -43,7 +44,7 @@ class WelcomePresenterImpl(private val resources: ResourceManager) : WelcomeCont
       printMatrix(lbpResult)
       
       histogram.forEachIndexed { index, it -> println("histogram[$index]: $it ") }
-      classify(histogram.toList())
+      classify(histogram.toList()).also { view.showResult(it) }
     }
   }
   
@@ -51,8 +52,9 @@ class WelcomePresenterImpl(private val resources: ResourceManager) : WelcomeCont
     classifier.fit(trainingFeatures, labels)
   }
   
-  private fun classify(features: List<Double>) {
+  private fun classify(features: List<Double>): String {
     val result = classifier.predict(features)
-    Log.d(this::class.java.simpleName, result)
+    if (BuildConfig.DEBUG) Log.d(this::class.java.simpleName, result)
+    return result
   }
 }

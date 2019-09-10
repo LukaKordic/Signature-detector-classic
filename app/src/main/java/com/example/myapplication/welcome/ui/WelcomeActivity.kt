@@ -21,6 +21,7 @@ import com.example.myapplication.welcome.WelcomeContract.WelcomePresenter
 import com.example.myapplication.welcome.WelcomeContract.WelcomeView
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_welcome.*
 import org.koin.android.ext.android.inject
 import java.io.FileNotFoundException
@@ -41,7 +42,7 @@ class WelcomeActivity : AppCompatActivity(), WelcomeView {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_welcome)
     presenter.setView(this)
-  
+    
     disableRecognizeButton()
     presenter.loadData(R.raw.signature_features, R.raw.signature_labels)
     initGoogleLogin()
@@ -103,7 +104,7 @@ class WelcomeActivity : AppCompatActivity(), WelcomeView {
   }
   
   override fun showResult(result: String) {
-    Toast.makeText(this, result, Toast.LENGTH_LONG).show()
+    Snackbar.make(welcomeLayout, result, Snackbar.LENGTH_LONG).show()
   }
   
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
