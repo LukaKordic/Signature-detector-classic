@@ -41,11 +41,11 @@ class WelcomeActivity : AppCompatActivity(), WelcomeView {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_welcome)
     presenter.setView(this)
-    parseLabels()
-    parseTrainingFeatures()
+  
+    disableRecognizeButton()
+    presenter.loadData(R.raw.signature_features, R.raw.signature_labels)
     initGoogleLogin()
     initClickActions()
-    disableRecognizeButton()
   }
   
   override fun checkCameraPermission() {
@@ -159,9 +159,7 @@ class WelcomeActivity : AppCompatActivity(), WelcomeView {
   private fun initClickActions() {
     capturePhoto.setOnClickListener { presenter.capturePhotoClicked() }
     loadFromGallery.setOnClickListener { presenter.loadImageClicked() }
-    recognize.setOnClickListener {
-      presenter.recognizeClicked(convertImageTo2DArray(image))
-    }
+    recognize.setOnClickListener { presenter.recognizeClicked(convertImageTo2DArray(image)) }
   }
   
   private fun requestCameraPermission() = ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA),
@@ -170,23 +168,11 @@ class WelcomeActivity : AppCompatActivity(), WelcomeView {
   private fun requestReadStoragePermission() =
       ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), RC_STORAGE_PERMISSION)
   
-  private fun parseTrainingFeatures() {
-    val inputStream = resources.openRawResource(R.raw.signature_features)
-    presenter.parseTrainingFeatures(inputStream)
-  }
-  
-  private fun parseLabels() {
-    val inputStream = resources.openRawResource(R.raw.signature_labels)
-    presenter.parseTrainingLabels(inputStream)
-  }
-  
   private fun disableRecognizeButton() = with(recognize) {
     isEnabled = false
-    setBackgroundColor(resources.getColor(R.color.gray))
   }
   
   private fun enableRecognizeButton() = with(recognize) {
     isEnabled = true
-    setBackgroundColor(resources.getColor(R.color.colorPrimary))
   }
 }

@@ -1,4 +1,6 @@
-package com.example.myapplication.common
+package com.example.myapplication.welcome.ml
+
+import com.example.myapplication.common.RegionGrow
 
 class LBP(private val samples: Int, private val radius: Int) {
   private val mapping: DoubleArray
@@ -32,21 +34,21 @@ class LBP(private val samples: Int, private val radius: Int) {
     return lbpSlice
   }
   
-  fun getLbpHist(data: Array<IntArray>): IntArray {
-    val histogram = IntArray(10)
+  fun getLbpHist(data: Array<DoubleArray>): DoubleArray {
+    val histogram = DoubleArray(10)
     for (i in data.indices) {
       for (j in data[0].indices) {
         when (data[i][j]) {
-          0 -> histogram[0] = histogram[0] + 1
-          1 -> histogram[1] = histogram[1] + 1
-          2 -> histogram[2] = histogram[2] + 1
-          3 -> histogram[3] = histogram[3] + 1
-          4 -> histogram[4] = histogram[4] + 1
-          5 -> histogram[5] = histogram[5] + 1
-          6 -> histogram[6] = histogram[6] + 1
-          7 -> histogram[7] = histogram[7] + 1
-          8 -> histogram[8] = histogram[8] + 1
-          9 -> histogram[9] = histogram[9] + 1
+          0.0 -> histogram[0] = histogram[0] + 1
+          1.0 -> histogram[1] = histogram[1] + 1
+          2.0 -> histogram[2] = histogram[2] + 1
+          3.0 -> histogram[3] = histogram[3] + 1
+          4.0 -> histogram[4] = histogram[4] + 1
+          5.0 -> histogram[5] = histogram[5] + 1
+          6.0 -> histogram[6] = histogram[6] + 1
+          7.0 -> histogram[7] = histogram[7] + 1
+          8.0 -> histogram[8] = histogram[8] + 1
+          9.0 -> histogram[9] = histogram[9] + 1
         }
       }
     }

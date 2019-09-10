@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 import android.app.Application
+import com.example.myapplication.di.appModule
 import com.example.myapplication.di.interactionModule
 import com.example.myapplication.di.networkingModule
 import com.example.myapplication.di.presentationModule
@@ -13,7 +14,7 @@ class App : Application() {
     super.onCreate()
     startKoin {
       androidContext(this@App)
-      modules(listOf(presentationModule, networkingModule, interactionModule))
+      modules(listOf(appModule, presentationModule, networkingModule, interactionModule))
     }
   }
 }

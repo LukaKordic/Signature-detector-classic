@@ -7,6 +7,6 @@ import com.example.myapplication.welcome.presentation.WelcomePresenterImpl
 import org.koin.dsl.module
 
 val presentationModule = module {
-  factory<WelcomeContract.WelcomePresenter> { WelcomePresenterImpl() }
+  factory<WelcomeContract.WelcomePresenter> { WelcomePresenterImpl(get()) }
   factory<ContentContract.Presenter> { ContentPresenter(get()) }
 }

@@ -10,14 +10,15 @@
     android:id="@+id/logoView"
     android:layout_width="80dp"
     android:layout_height="80dp"
-    android:layout_margin="16dp"
-    android:adjustViewBounds="true"
+    android:layout_marginTop="16dp"
+    android:layout_marginBottom="8dp"
     android:contentDescription="@string/logo_view"
     android:src="@drawable/logo"
+    app:layout_constraintBottom_toTopOf="@id/descrTextTv"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/descrTextTv"
-    app:layout_constraintTop_toTopOf="parent" />
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_chainStyle="spread" />
 
   <TextView
     android:id="@+id/descrTextTv"
@@ -74,12 +75,10 @@
 
   <ImageView
     android:id="@+id/photoPreview"
-    android:layout_width="300dp"
-    android:layout_height="180dp"
-    android:adjustViewBounds="true"
+    android:layout_width="200dp"
+    android:layout_height="130dp"
     android:contentDescription="@string/photo_preview_content_description"
     app:layout_constraintBottom_toTopOf="@id/recognize"
-    app:layout_constraintDimensionRatio="16:9"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@id/capturePhoto" />
@@ -89,8 +88,7 @@
     android:layout_width="0dp"
     android:layout_height="54dp"
     android:layout_margin="16dp"
-    android:background="@drawable/recognize_button_shape"
-    android:enabled="false"
+    android:background="@drawable/recognize_button_selector"
     android:text="@string/recognize"
     android:textAllCaps="false"
     android:textColor="@color/white"

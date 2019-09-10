@@ -1,6 +1,6 @@
 package com.example.myapplication.welcome
 
-import java.io.InputStream
+import androidx.annotation.RawRes
 
 interface WelcomeContract {
   
@@ -17,7 +17,6 @@ interface WelcomeContract {
     fun capturePhotoClicked()
     fun loadImageClicked()
     fun recognizeClicked(image: Array<DoubleArray>)
-    fun parseTrainingFeatures(inputStream: InputStream)
-    fun parseTrainingLabels(inputStream: InputStream)
+    fun loadData(@RawRes signatureFeatures: Int, @RawRes signatureLabels: Int)
   }
 }
