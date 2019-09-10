@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.networking.model.Repository
 
-class RepoAdapter : RecyclerView.Adapter<RepoViewHolder>() {
+class RepoAdapter(private val onItemClick: (String) -> Unit) : RecyclerView.Adapter<RepoViewHolder>() {
   private val repositories = mutableListOf<Repository>()
   
   fun setData(repos: List<Repository>) {
@@ -17,7 +17,7 @@ class RepoAdapter : RecyclerView.Adapter<RepoViewHolder>() {
   
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepoViewHolder {
     val view = LayoutInflater.from(parent.context).inflate(R.layout.repo_item_layout, parent, false)
-    return RepoViewHolder(view)
+    return RepoViewHolder(view, onItemClick)
   }
   
   override fun getItemCount() = repositories.size

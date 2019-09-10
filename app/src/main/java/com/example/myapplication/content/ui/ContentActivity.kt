@@ -2,12 +2,14 @@ package com.example.myapplication.content.ui
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.content.ContentContract
@@ -27,7 +29,7 @@ class ContentActivity : AppCompatActivity(), ContentContract.View {
   private val signInOptions by lazy { GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build() }
   private val signInClient by lazy { GoogleSignIn.getClient(this, signInOptions) }
   private val presenter: ContentContract.Presenter by inject()
-  private val repoAdapter by lazy { RepoAdapter() }
+  private val repoAdapter by lazy { RepoAdapter(this::showRepoOnline) }
   
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -67,6 +69,11 @@ class ContentActivity : AppCompatActivity(), ContentContract.View {
   
   override fun hideLoading() {
     loading.visibility = View.GONE
+  }
+  
+  private fun showRepoOnline(url: String) {
+    val intent = CustomTabsIntent.Builder().build()
+    intent.launchUrl(this, Uri.parse(url))
   }
   
   private fun initList() = with(repoList) {

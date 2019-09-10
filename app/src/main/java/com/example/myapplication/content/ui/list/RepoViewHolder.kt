@@ -7,11 +7,13 @@ import com.example.myapplication.networking.model.Repository
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.repo_item_layout.view.*
 
-class RepoViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
+class RepoViewHolder(override val containerView: View, private val onClick: (String) -> Unit) : RecyclerView.ViewHolder(containerView),
+    LayoutContainer {
   
   fun bind(data: Repository) = with(containerView) {
     repoName.text = data.name
     userName.text = data.owner.login
     Glide.with(this).load(data.owner.avatar_url).into(userImage)
+    setOnClickListener { onClick(data.html_url) }
   }
 }
