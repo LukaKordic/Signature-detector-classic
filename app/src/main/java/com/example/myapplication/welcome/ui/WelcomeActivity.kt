@@ -10,7 +10,6 @@ import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -105,6 +104,11 @@ class WelcomeActivity : AppCompatActivity(), WelcomeView {
   
   override fun showResult(result: String) {
     Snackbar.make(welcomeLayout, result, Snackbar.LENGTH_LONG).show()
+  }
+  
+  override fun showContent() {
+    startContentActivity(this)
+    finish()
   }
   
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

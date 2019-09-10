@@ -10,6 +10,7 @@ interface WelcomeContract {
     fun checkReadStoragePermission()
     fun launchGallery()
     fun showResult(result: String)
+    fun showContent()
   }
   
   interface WelcomePresenter {

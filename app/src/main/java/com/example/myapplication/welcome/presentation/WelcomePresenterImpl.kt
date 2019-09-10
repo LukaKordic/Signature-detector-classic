@@ -2,6 +2,8 @@ package com.example.myapplication.welcome.presentation
 
 import android.util.Log
 import com.example.myapplication.BuildConfig
+import com.example.myapplication.common.FAKE
+import com.example.myapplication.common.ORIGINAL
 import com.example.myapplication.common.ResourceManager
 import com.example.myapplication.common.printMatrix
 import com.example.myapplication.welcome.WelcomeContract
@@ -44,7 +46,9 @@ class WelcomePresenterImpl(private val resources: ResourceManager) : WelcomeCont
       printMatrix(lbpResult)
       
       histogram.forEachIndexed { index, it -> println("histogram[$index]: $it ") }
-      classify(histogram.toList()).also { view.showResult(it) }
+      classify(histogram.toList()).also {
+        if (it == FAKE) view.showResult(it) else view.showContent()
+      }
     }
   }
   
