@@ -7,14 +7,14 @@ import com.google.gson.reflect.TypeToken
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
-class ResourceManager(private val context: Context) {
+class ResourceManager(private val context: Context) : Resources {
   
-  fun getRawSignatureFeatures(@RawRes signatureFeatures: Int): List<List<Int>> {
+  override fun getRawSignatureFeatures(@RawRes signatureFeatures: Int): List<List<Int>> {
     val featuresInput = context.resources.openRawResource(signatureFeatures)
     return CSVFile(featuresInput).read()
   }
   
-  fun getRawSignatureLabels(@RawRes signatureLabels: Int): List<String> {
+  override fun getRawSignatureLabels(@RawRes signatureLabels: Int): List<String> {
     val labelsInput = context.resources.openRawResource(signatureLabels)
     val gson = Gson()
     val reader = BufferedReader(InputStreamReader(labelsInput))

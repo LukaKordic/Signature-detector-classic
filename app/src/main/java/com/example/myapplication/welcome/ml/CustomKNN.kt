@@ -3,7 +3,7 @@ package com.example.myapplication.welcome.ml
 import kotlin.math.pow
 import kotlin.math.sqrt
 
-class CustomKNN {
+open class CustomKNN {
   private lateinit var trainingData: List<List<Int>>
   private lateinit var labels: List<String>
   
