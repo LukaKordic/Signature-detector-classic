@@ -1,4 +1,4 @@
-package com.example.myapplication.common
+package com.example.myapplication.common.utils
 
 import android.content.Context
 import androidx.annotation.RawRes
@@ -9,7 +9,7 @@ import java.io.InputStreamReader
 
 class ResourceManager(private val context: Context) : Resources {
   
-  override fun getRawSignatureFeatures(@RawRes signatureFeatures: Int): List<List<Int>> {
+  override fun getRawSignatureFeatures(@RawRes signatureFeatures: Int): List<List<Double>> {
     val featuresInput = context.resources.openRawResource(signatureFeatures)
     return CSVFile(featuresInput).read()
   }

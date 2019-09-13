@@ -1,4 +1,4 @@
-package com.example.myapplication.common
+package com.example.myapplication.common.constants
 
 //REQUEST CODES
 const val RC_CAPTURE_IMAGE = 100

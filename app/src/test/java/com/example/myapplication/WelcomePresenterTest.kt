@@ -1,6 +1,6 @@
 package com.example.myapplication
 
-import com.example.myapplication.common.Resources
+import com.example.myapplication.common.utils.Resources
 import com.example.myapplication.welcome.WelcomeContract
 import com.example.myapplication.welcome.ml.CustomKNN
 import com.example.myapplication.welcome.presentation.WelcomePresenterImpl

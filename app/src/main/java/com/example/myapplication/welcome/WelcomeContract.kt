@@ -9,7 +9,7 @@ interface WelcomeContract {
     fun checkCameraPermission()
     fun checkReadStoragePermission()
     fun launchGallery()
-    fun showResult(result: String)
+    fun showError()
     fun showContent()
   }
   

@@ -1,4 +1,4 @@
-package com.example.myapplication.common
+package com.example.myapplication.welcome.ml
 
 abstract class RegionGrow {
   companion object {

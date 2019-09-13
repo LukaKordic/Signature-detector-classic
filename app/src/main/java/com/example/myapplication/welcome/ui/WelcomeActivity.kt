@@ -7,14 +7,16 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.example.myapplication.R
-import com.example.myapplication.common.*
+import com.example.myapplication.common.constants.*
+import com.example.myapplication.common.extensions.checkPermission
+import com.example.myapplication.common.extensions.onClick
+import com.example.myapplication.common.utils.convertImageTo2DArray
+import com.example.myapplication.common.utils.toGrayscale
 import com.example.myapplication.content.ui.startContentActivity
 import com.example.myapplication.welcome.WelcomeContract.WelcomePresenter
 import com.example.myapplication.welcome.WelcomeContract.WelcomeView
@@ -49,37 +51,19 @@ class WelcomeActivity : AppCompatActivity(), WelcomeView {
   }
   
   override fun checkCameraPermission() {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-      if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
-      // permission is not granted, ask for it
-        requestCameraPermission()
-      else
-        openCamera()
-    } else {
-      // permission is granted upon installation on versions lower than Marshmallow
-      openCamera()
-    }
+    checkPermission(Manifest.permission.CAMERA, ::openCamera, ::requestCameraPermission)
   }
   
   override fun checkReadStoragePermission() {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-      if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-      // permission is not granted, ask for it
-        requestReadStoragePermission()
-      else
-        launchGallery()
-    } else {
-      // permission is granted upon installation on versions lower than Marshmallow
-      launchGallery()
-    }
+    checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE, ::launchGallery, ::requestReadStoragePermission)
   }
   
   override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
     if (requestCode == RC_CAMERA_PERMISSION && permissions.isNotEmpty()) {
       if (grantResults[0] == PackageManager.PERMISSION_GRANTED) openCamera()
-      if (grantResults[1] == PackageManager.PERMISSION_GRANTED) launchGallery()
+    } else {
+      if (grantResults[0] == PackageManager.PERMISSION_GRANTED) launchGallery()
     }
-    
   }
   
   override fun openCamera() {
@@ -102,8 +86,8 @@ class WelcomeActivity : AppCompatActivity(), WelcomeView {
     }
   }
   
-  override fun showResult(result: String) {
-    Snackbar.make(welcomeLayout, result, Snackbar.LENGTH_LONG).show()
+  override fun showError() {
+    Snackbar.make(welcomeLayout, getString(R.string.fake_signature), Snackbar.LENGTH_LONG).show()
   }
   
   override fun showContent() {
@@ -118,7 +102,7 @@ class WelcomeActivity : AppCompatActivity(), WelcomeView {
         RC_CAPTURE_IMAGE -> {
           val image = data?.extras?.get("data") as? Bitmap
           image?.let {
-            photoPreview.setImageBitmap(it)
+            photoPreview.setImageBitmap(it.toGrayscale())
             this.image = it
             enableRecognizeButton()
           }
@@ -146,14 +130,10 @@ class WelcomeActivity : AppCompatActivity(), WelcomeView {
   }
   
   private fun initGoogleLogin() {
-    if (currentUser != null) {
+    currentUser?.let {
       startContentActivity(this)
       finish()
-    } else {
-      googleSignInBtn.setOnClickListener {
-        signIn()
-      }
-    }
+    } ?: googleSignInBtn.onClick { signIn() }
   }
   
   private fun signIn() {
@@ -162,16 +142,17 @@ class WelcomeActivity : AppCompatActivity(), WelcomeView {
   }
   
   private fun initClickActions() {
-    capturePhoto.setOnClickListener { presenter.capturePhotoClicked() }
-    loadFromGallery.setOnClickListener { presenter.loadImageClicked() }
-    recognize.setOnClickListener { presenter.recognizeClicked(convertImageTo2DArray(image)) }
+    capturePhoto.onClick { presenter.capturePhotoClicked() }
+    loadFromGallery.onClick { presenter.loadImageClicked() }
+    recognize.onClick { presenter.recognizeClicked(convertImageTo2DArray(image)) }
   }
   
   private fun requestCameraPermission() = ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA),
                                                                             RC_CAMERA_PERMISSION)
   
   private fun requestReadStoragePermission() =
-      ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), RC_STORAGE_PERMISSION)
+      ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                                        RC_STORAGE_PERMISSION)
   
   private fun disableRecognizeButton() = with(recognize) {
     isEnabled = false

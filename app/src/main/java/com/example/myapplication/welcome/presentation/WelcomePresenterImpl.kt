@@ -3,18 +3,20 @@ package com.example.myapplication.welcome.presentation
 import android.util.Log
 import androidx.annotation.RawRes
 import com.example.myapplication.BuildConfig
-import com.example.myapplication.common.FAKE
-import com.example.myapplication.common.Resources
+import com.example.myapplication.common.constants.FAKE
+import com.example.myapplication.common.utils.Resources
 import com.example.myapplication.welcome.WelcomeContract
 import com.example.myapplication.welcome.ml.CustomKNN
 import com.example.myapplication.welcome.ml.LBP
+import com.example.myapplication.welcome.ml.Lbp
+import com.example.myapplication.welcome.ml.Lbp.printMatrix
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class WelcomePresenterImpl(private val resources: Resources) : WelcomeContract.WelcomePresenter {
   private lateinit var view: WelcomeContract.WelcomeView
-  private lateinit var trainingFeatures: List<List<Int>>
+  private lateinit var trainingFeatures: List<List<Double>>
   private lateinit var labels: List<String>
   private val classifier by lazy { CustomKNN() }
   
@@ -38,7 +40,7 @@ class WelcomePresenterImpl(private val resources: Resources) : WelcomeContract.W
     GlobalScope.launch(Dispatchers.IO) {
       val lbpHist = getLbpHistogram(image)
       classify(lbpHist.toList()).also {
-        if (it == FAKE) view.showResult(it) else view.showContent()
+        if (it == FAKE) view.showError() else view.showContent()
       }
     }
   }
@@ -48,20 +50,28 @@ class WelcomePresenterImpl(private val resources: Resources) : WelcomeContract.W
   }
   
   private fun classify(features: List<Double>): String {
+    val testFeatures = listOf(0.07284444444412069,
+                              0.07857777777742854,
+                              0.03564444444428602,
+                              0.05124444444421669,
+                              0.04933333333311407,
+                              0.06506666666637748,
+                              0.0460444444442398,
+                              0.08035555555519841,
+                              0.35159999999843733,
+                              0.16928888888813648)
     val result = classifier.predict(features)
     if (BuildConfig.DEBUG) Log.d(this::class.java.simpleName, result)
     return result
   }
   
   private fun getLbpHistogram(image: Array<DoubleArray>): DoubleArray {
-    val lbp = LBP(8, 1)
+    val lbp = Lbp(8, 1)
     val lbpResult = lbp.getLBP(image)
-//      val lbp1d = lbp.reshape(lbpResult, 0, 148, 0, 148)
-//      val cutPoints = doubleArrayOf(0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0)
-//      val histogram = lbp.histc(lbp1d, cutPoints)
-    val histogram = lbp.getLbpHist(lbpResult)
-//    printMatrix(lbpResult)
-//    histogram.forEachIndexed { index, it -> println("histogram[$index]: $it ") }
+    val lbp1d = lbp.reshape(lbpResult, 0, 149, 0, 149)
+    val histogram = lbp.histc(lbp1d)
+    printMatrix(lbpResult)
+    histogram.forEachIndexed { index, it -> println("histogram[$index]: $it ") }
     return histogram
   }
 }

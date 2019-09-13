@@ -1,9 +1,9 @@
 package com.example.myapplication.welcome.ml
 
-import com.example.myapplication.common.RegionGrow
+import kotlin.math.pow
 
 class LBP(private val samples: Int, private val radius: Int) {
-  private val mapping: DoubleArray
+  private val mapping: ByteArray
   private val neighbourhood: Array<DoubleArray>
   var cutPoints: DoubleArray = DoubleArray(samples + 2)
   
@@ -14,13 +14,12 @@ class LBP(private val samples: Int, private val radius: Int) {
     mapping = getMapping(samples)
     println("Mapping length " + mapping.size + " samples " + samples)
     neighbourhood = getCircularNeighbourhood(radius, samples)
-    
   }
   
-  fun getLBP(data: Array<DoubleArray>): Array<DoubleArray> {
+  fun getLBP(data: Array<DoubleArray>): Array<ByteArray> {
     val width = data.size
     val height = data[0].size
-    val lbpSlice = Array(width) { DoubleArray(height) }
+    val lbpSlice = Array(width) { ByteArray(height) }
     /*Calculate the lbp*/
     val coordinates = IntArray(2)
     for (i in 0 + radius until width - radius) {
@@ -34,35 +33,18 @@ class LBP(private val samples: Int, private val radius: Int) {
     return lbpSlice
   }
   
-  fun getLbpHist(data: Array<DoubleArray>): DoubleArray {
-    val histogram = DoubleArray(10)
-    for (i in data.indices) {
-      for (j in data[0].indices) {
-        when (data[i][j]) {
-          0.0 -> histogram[0] = histogram[0] + 1
-          1.0 -> histogram[1] = histogram[1] + 1
-          2.0 -> histogram[2] = histogram[2] + 1
-          3.0 -> histogram[3] = histogram[3] + 1
-          4.0 -> histogram[4] = histogram[4] + 1
-          5.0 -> histogram[5] = histogram[5] + 1
-          6.0 -> histogram[6] = histogram[6] + 1
-          7.0 -> histogram[7] = histogram[7] + 1
-          8.0 -> histogram[8] = histogram[8] + 1
-          9.0 -> histogram[9] = histogram[9] + 1
-        }
-      }
-    }
-    return histogram
-  }
-  
-  private fun lbpBlock(data: Array<DoubleArray>, coordinates: IntArray): Double {
+  private fun lbpBlock(data: Array<DoubleArray>, coordinates: IntArray): Byte {
     var lbpValue = 0
     val x = coordinates[0].toDouble()
     val y = coordinates[1].toDouble()
     for (i in neighbourhood.indices) {
       lbpValue = if (data[x.toInt()][y.toInt()] > getBicubicInterpolatedPixel(x + neighbourhood[i][0],
                                                                               y + neighbourhood[i][1],
-                                                                              data) + 3.0) lbpValue or (1 shl i) else lbpValue and (1 shl i).inv()
+                                                                              data) + 3.0) {
+        lbpValue or (1 shl i)
+      } else {
+        lbpValue and (1 shl i).inv()
+      }
     }
     return mapping[lbpValue]
   }
@@ -149,9 +131,9 @@ class LBP(private val samples: Int, private val radius: Int) {
   companion object {
     
     /*Mapping to rotation invariant uniform patterns: riu2 in getmapping.m*/
-    private fun getMapping(samples: Int): DoubleArray {
-      val bitMaskLength = Math.pow(2.0, samples.toDouble()).toInt()
-      val table = DoubleArray(bitMaskLength)
+    private fun getMapping(samples: Int): ByteArray {
+      val bitMaskLength = 2.0.pow(samples.toDouble()).toInt()
+      val table = ByteArray(bitMaskLength)
       var j: Int
       var sampleBitMask = 0
       for (i in 0 until samples) {
@@ -169,10 +151,10 @@ class LBP(private val samples: Int, private val radius: Int) {
         
         if (numt <= 2) {
           for (k in 0 until samples) {
-            table[i] = table[i].plus(i shr k and 1)
+            table[i] = table[i].plus(i shr k and 1).toByte()
           }
         } else {
-          table[i] = (samples + 1).toDouble()
+          table[i] = (samples + 1).toByte()
         }
       }
       return table

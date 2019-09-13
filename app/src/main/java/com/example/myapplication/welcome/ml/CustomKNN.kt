@@ -4,10 +4,10 @@ import kotlin.math.pow
 import kotlin.math.sqrt
 
 open class CustomKNN {
-  private lateinit var trainingData: List<List<Int>>
+  private lateinit var trainingData: List<List<Double>>
   private lateinit var labels: List<String>
   
-  fun fit(trainingData: List<List<Int>>, labels: List<String>) {
+  fun fit(trainingData: List<List<Double>>, labels: List<String>) {
     this.trainingData = trainingData
     this.labels = labels
   }
@@ -26,7 +26,7 @@ open class CustomKNN {
     return labels[bestIndex]
   }
   
-  private fun distance(a: List<Double>, b: List<Int>): Double {
+  private fun distance(a: List<Double>, b: List<Double>): Double {
     var diffSquareSum = 0.0
     for (i in a.indices) {
       diffSquareSum += (a[i] - b[i]).pow(2.0)

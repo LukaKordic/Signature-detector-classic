@@ -8,4 +8,5 @@
     <string name="load_image_for_recognition">Load image for recognition:</string>
     <string name="or">OR</string>
     <string name="logo_view">Logo view</string>
+  <string name="fake_signature">Provided signature is not valid</string>
 </resources>

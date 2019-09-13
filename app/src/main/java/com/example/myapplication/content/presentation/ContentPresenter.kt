@@ -1,6 +1,6 @@
 package com.example.myapplication.content.presentation
 
-import com.example.myapplication.common.DEFAULT_USER_NAME
+import com.example.myapplication.common.constants.DEFAULT_USER_NAME
 import com.example.myapplication.content.ContentContract
 import com.example.myapplication.content.interaction.GithubInteractor
 import com.example.myapplication.networking.model.Repository

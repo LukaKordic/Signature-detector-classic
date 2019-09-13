@@ -1,4 +1,4 @@
-package com.example.myapplication.common
+package com.example.myapplication.common.utils
 
 import java.io.BufferedReader
 import java.io.IOException
@@ -7,13 +7,14 @@ import java.io.InputStreamReader
 
 class CSVFile(private var inputStream: InputStream) {
   
-  fun read(): List<List<Int>> {
+  fun read(): List<List<Double>> {
     val resultList = mutableListOf<List<String>>()
+    val doubles = mutableListOf<List<Double>>()
     val rows = mutableListOf<String>()
     val reader = BufferedReader(InputStreamReader(inputStream))
     inputStream.use {
       try {
-        repeat(471) {
+        repeat(470) {
           rows.add(reader.readLine())
         }
         rows.forEach { resultList.add(it.split(",")) }
@@ -22,8 +23,7 @@ class CSVFile(private var inputStream: InputStream) {
       }
     }
     
-    val doubles = mutableListOf<List<Int>>()
-    resultList.forEach { it.map { it.toInt() }.also { doubles.add(it) } }
+    resultList.forEach { it.map { it.toDouble() }.also { doubles.add(it) } }
 //    doubles.forEach { println(it) }
     return doubles
   }
