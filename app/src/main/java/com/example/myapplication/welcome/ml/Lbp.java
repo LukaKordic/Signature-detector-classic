@@ -21,42 +21,44 @@ public class Lbp {
     public Lbp(int samples, int radius) {
         this.samples = samples;
         this.radius = radius;
-        cutPoints = new double[samples + 2];
-        for (int i = 0; i < samples + 2; ++i) {
+        cutPoints = new double[256];
+        for (int i = 0; i < 256; ++i) {
             cutPoints[i] = i;
         }
-        mapping = getMapping(samples);
+//        mapping = getMapping(samples);
         //System.out.println("Mapping length "+mapping.length+" samples "+samples);
         neighbourhood = getCircularNeighbourhood(radius, samples);
 
     }
 
-    public byte[][] getLBP(double[][] data) {
+    public int[][] getLBP(double[][] data) {
         int width = data.length;
         int height = data[0].length;
-        byte[][] lbpSlice = new byte[width][height];
+        int[][] lbpSlice = new int[height][width];
         /*Calculate the lbp*/
         int[] coordinates = new int[2];
-        for (int i = radius; i < width - radius; ++i) {
-            for (int j = radius; j < height - radius; ++j) {
-                coordinates[0] = i;
-                coordinates[1] = j;
-                //System.out.println("source x "+coordinates[0]+" y "+coordinates[1]);
-                lbpSlice[i][j] = lbpBlock(data, coordinates);
+        for (int j = radius; j < height - radius; ++j) {
+            for (int i = radius; i < width - radius; ++i) {
+                coordinates[0] = j;
+                coordinates[1] = i;
+//                System.out.println("source x "+coordinates[1]+" y "+coordinates[0]);
+                lbpSlice[j][i] = 255 - lbpBlock(data, coordinates);
             }
         }
 
         return lbpSlice;
     }
 
-    private byte lbpBlock(double[][] data, int[] coordinates) {
+    private int lbpBlock(double[][] data, int[] coordinates) {
         int lbpValue = 0;
         double x = (double) coordinates[0];
         double y = (double) coordinates[1];
         for (int i = 0; i < neighbourhood.length; ++i) {
-            lbpValue = data[(int) x][(int) y] > getBicubicInterpolatedPixel(x + neighbourhood[i][0], y + neighbourhood[i][1], data) + 3.0 ? lbpValue | (1 << i) : lbpValue & ~(1 << i);
+            lbpValue =
+                    data[(int) y][(int) x] > getBicubicInterpolatedPixel(x + neighbourhood[i][0], y + neighbourhood[i][1], data) + 3.0 ?
+                            lbpValue | (1 << i) : lbpValue & ~(1 << i);
         }
-        return mapping[lbpValue];
+        return (int) lbpValue;
     }
 
     /*Mapping to rotation invariant uniform patterns: riu2 in getmapping.m*/
@@ -186,7 +188,7 @@ public class Lbp {
     }
 
     /*reshape 2D Matrix*/
-    public double[] reshape(byte[][] dataIn, int xb, int xe, int yb, int ye) {
+    public double[] reshape(int[][] dataIn, int xb, int xe, int yb, int ye) {
         double[] array = new double[(xe - xb + 1) * (ye - yb + 1)];
         int ind = 0;
         for (int y = yb; y <= ye; ++y) {
@@ -279,7 +281,7 @@ public class Lbp {
 //        printMatrix(resultLBP);
 //    }
 
-    public static void printMatrix(double[][] matrix) {
+    public static void printMatrix(int[][] matrix) {
         DecimalFormat f = new DecimalFormat("0.#");
         for (int x = 0; x < matrix.length; ++x) {
             for (int y = 0; y < matrix[x].length; ++y) {
