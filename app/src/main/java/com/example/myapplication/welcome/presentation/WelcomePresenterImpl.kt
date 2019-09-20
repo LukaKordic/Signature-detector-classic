@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.annotation.RawRes
 import com.example.myapplication.BuildConfig
 import com.example.myapplication.common.constants.FAKE
+import com.example.myapplication.common.utils.IMG_HEIGHT
+import com.example.myapplication.common.utils.IMG_WIDTH
 import com.example.myapplication.common.utils.Resources
 import com.example.myapplication.welcome.WelcomeContract
 import com.example.myapplication.welcome.ml.CustomKNN
@@ -39,7 +41,7 @@ class WelcomePresenterImpl(private val resources: Resources) : WelcomeContract.W
   override fun recognizeClicked(image: Array<DoubleArray>) {
     GlobalScope.launch(Dispatchers.IO) {
       val lbpHist = getLbpHistogram(image)
-      classify(lbpHist.toList()).also {
+      classify(lbpHist).also {
         if (it == FAKE) view.showError() else view.showContent()
       }
     }
@@ -49,23 +51,13 @@ class WelcomePresenterImpl(private val resources: Resources) : WelcomeContract.W
     classifier.fit(trainingFeatures, labels)
   }
   
-  private fun classify(features: List<Double>): String {
-    val testFeatures = listOf(0.07284444444412069,
-                              0.07857777777742854,
-                              0.03564444444428602,
-                              0.05124444444421669,
-                              0.04933333333311407,
-                              0.06506666666637748,
-                              0.0460444444442398,
-                              0.08035555555519841,
-                              0.35159999999843733,
-                              0.16928888888813648)
+  private fun classify(features: IntArray): String {
     val result = classifier.predict(features)
     if (BuildConfig.DEBUG) Log.d(this::class.java.simpleName, result)
     return result
   }
   
-  private fun getLbpHistogram(image: Array<DoubleArray>): DoubleArray {
+  private fun getLbpHistogram(image: Array<DoubleArray>): IntArray {
     val lbp = Lbp(8, 1)
     val lbpResult = lbp.getLBP(image)
     val lbp1d = lbp.reshape(lbpResult, 0, 149, 0, 149)

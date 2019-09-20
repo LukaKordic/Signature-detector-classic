@@ -12,7 +12,7 @@ open class CustomKNN {
     this.labels = labels
   }
   
-  fun predict(testData: List<Double>): String {
+  fun predict(testData: IntArray): String {
     var bestDistance = distance(testData, trainingData[0])
     var bestIndex = 0
     for (i in 1 until trainingData.size) {
@@ -26,7 +26,7 @@ open class CustomKNN {
     return labels[bestIndex]
   }
   
-  private fun distance(a: List<Double>, b: List<Double>): Double {
+  private fun distance(a: IntArray, b: List<Double>): Double {
     var diffSquareSum = 0.0
     for (i in a.indices) {
       diffSquareSum += (a[i] - b[i]).pow(2.0)

@@ -9,7 +9,7 @@ import java.text.DecimalFormat
 
 fun convertImageTo2DArray(image: Bitmap): Array<DoubleArray> {
   val imageMatrix = Array(150) { DoubleArray(150) }
-  val resizedImage = resizeImage(image).toGrayscale()
+  val resizedImage = resizeImage(image).toGrayscale() //zamjeni redoslijed
   for (y in 0 until IMG_HEIGHT) {
     for (x in 0 until IMG_WIDTH) {
       val pixelValue = resizedImage.getPixel(x, y)
@@ -77,5 +77,5 @@ fun printMatrix(matrix: Array<DoubleArray>) {
 }
 
 //IMAGE DIMENSIONS
-private const val IMG_WIDTH = 150
-private const val IMG_HEIGHT = 150
+const val IMG_WIDTH = 150
+const val IMG_HEIGHT = 150

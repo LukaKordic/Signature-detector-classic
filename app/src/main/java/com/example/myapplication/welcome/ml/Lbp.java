@@ -58,7 +58,7 @@ public class Lbp {
                     data[(int) y][(int) x] > getBicubicInterpolatedPixel(x + neighbourhood[i][0], y + neighbourhood[i][1], data) + 3.0 ?
                             lbpValue | (1 << i) : lbpValue & ~(1 << i);
         }
-        return (int) lbpValue;
+        return lbpValue;
     }
 
     /*Mapping to rotation invariant uniform patterns: riu2 in getmapping.m*/
@@ -168,8 +168,8 @@ public class Lbp {
         return histogram;
     }
 
-    public double[] histc(double[] values) {
-        double[] histogram = new double[cutPoints.length];
+    public int[] histc(int[] values) {
+        int[] histogram = new int[cutPoints.length];
         for (int i = 0; i < values.length; ++i) {
             int j = 0;
 
@@ -183,17 +183,17 @@ public class Lbp {
             //System.out.println("ind "+i+ " val "+values[i]+" bin "+j+" from "+cutPoints[j]);
             histogram[j] += 1;
         }
-        histogram = arrDiv(histogram, sum(histogram));
+//        histogram = arrDiv(histogram, sum(histogram));
         return histogram;
     }
 
     /*reshape 2D Matrix*/
-    public double[] reshape(int[][] dataIn, int xb, int xe, int yb, int ye) {
-        double[] array = new double[(xe - xb + 1) * (ye - yb + 1)];
+    public int[] reshape(int[][] dataIn, int xb, int xe, int yb, int ye) {
+        int[] array = new int[(xe - xb + 1) * (ye - yb + 1)];
         int ind = 0;
-        for (int y = yb; y <= ye; ++y) {
-            for (int x = xb; x <= xe; ++x) {
-                array[ind] = dataIn[y][x];
+        for (int x = xb; x <= xe; ++x) {
+            for (int y = yb; y <= ye; ++y) {
+                array[ind] = dataIn[x][y];
                 ++ind;
             }
         }
