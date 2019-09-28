@@ -1,5 +1,7 @@
 package com.example.myapplication.welcome.ml
 
+import com.example.myapplication.common.constants.FAKE
+import com.example.myapplication.common.constants.ORIGINAL
 import kotlin.math.pow
 import kotlin.math.sqrt
 
@@ -13,23 +15,34 @@ open class CustomKNN {
   }
   
   fun predict(testData: IntArray): String {
-    var bestDistance = distance(testData, trainingData[0])
-    var bestIndex = 0
-    for (i in 1 until trainingData.size) {
+    val bestDistances = DoubleArray(5) { distance(testData, trainingData[it]) }
+    val bestDistanceIndices = IntArray(5) { it }
+    var originalCounter = 0
+    bestDistances.sort()
+    bestDistanceIndices.sort()
+    
+    for (i in 5 until trainingData.size) {
       val dist = distance(testData, trainingData[i])
-      println("best distance: $bestDistance, distance at [$i]: $dist")
-      if (dist < bestDistance) {
-        bestDistance = dist
-        bestIndex = i
+      for (index in bestDistances.indices) {
+        if (dist < bestDistances[index]) {
+          bestDistances[index] = dist
+          bestDistanceIndices[index] = i
+          break
+        }
       }
     }
-    return labels[bestIndex]
+    bestDistanceIndices.forEach {
+      if (labels[it] == ORIGINAL) {
+        originalCounter++
+      }
+    }
+    return if (originalCounter > 2) ORIGINAL else FAKE
   }
   
   private fun distance(a: IntArray, b: List<Double>): Double {
     var diffSquareSum = 0.0
     for (i in a.indices) {
-      diffSquareSum += (a[i] - b[i]).pow(2.0)
+      diffSquareSum += (a[i] - b[i]).pow(2)
     }
     return sqrt(diffSquareSum)
   }
